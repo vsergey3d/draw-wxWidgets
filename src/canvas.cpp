@@ -21,7 +21,7 @@ WXCanvas::WXCanvas(wxWindow* parent, wxWindowID id, int* attribs) :
 
 ShapePtr WXCanvas::addRect(const Point& position, const Size& size, const Color& color) {
 
-    auto obj = renderer_->makeRect(false);
+    auto obj = renderer_->makeRect();
     obj->position(position);
     obj->size(size);
     obj->color(color);
