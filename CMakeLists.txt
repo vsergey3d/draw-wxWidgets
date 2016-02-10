@@ -3,20 +3,19 @@ cmake_minimum_required(VERSION 3.3)
 set(PROJECT wxdraw)
 project(${PROJECT} CXX)
 
-add_definitions(-D_UNICODE -DGLEW_STATIC)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-set(CMAKE_CXX_FLAGS_DEBUG "-g -D_DEBUG")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
-
 if(WIN32)
     set(PLATFORM WIN32)
 endif()
 
-set(LIB_TYPE gcc_lib)
-if(MSVC)
-    set(LIB_TYPE vc_lib)
+add_definitions(-D_UNICODE -DGLEW_STATIC)
+if(MINGW)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -pedantic -Wnon-virtual-dtor -Werror")
+    set(LIB_TYPE mingw_lib)
+elseif(MSVC)
+    set(LIB_TYPE msvc_lib)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /ZI /MTd")
 endif()
 
 set(ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
@@ -40,9 +39,10 @@ endif()
 
 find_library(OPENGL opengl)
 
+if(MINGW)
 set(LIB_EXT .a)
 set(LIB_PREFIX lib)
-if(MSVC)
+elseif(MSVC)
 set(LIB_EXT .lib)
 set(LIB_PREFIX )
 endif()
@@ -69,19 +69,20 @@ link_directories(${LIB_DIR}/draw/lib/${LIB_TYPE}
         ${LIB_DIR}/freetype2/lib/${LIB_TYPE}
         ${LIB_DIR}/glew/lib/${LIB_TYPE})
 
-set(INCLUDE_DIR ${SRC_DIR}
+set(INCLUDE_DIR 
         ${LIB_DIR}/freetype2/include
         ${LIB_DIR}/glew/include
         ${LIB_DIR}/agg/include
         ${LIB_DIR}/draw/include
 )
-include_directories(${INCLUDE_DIR} {$OPENGL_INCLUDE_DIR} ${wxWidgets_INCLUDE_DIRS})
+include_directories(${SRC_DIR})
+include_directories(SYSTEM ${INCLUDE_DIR} {$OPENGL_INCLUDE_DIR} ${wxWidgets_INCLUDE_DIRS})
 
 add_executable(${PROJECT} ${PLATFORM} ${SOURCE_FILES})
 target_link_libraries(${PROJECT} ${LIBS})
 
 set_target_properties(${PROJECT} PROPERTIES DEBUG_POSTFIX d)
-set_property(TARGET ${PROJECT} PROPERTY FOLDER "runtime")
+set_target_properties(${PROJECT} PROPERTIES FOLDER "runtime")
 
 set_target_properties(${PROJECT} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${ROOT_DIR}/bin)
 set_target_properties(${PROJECT} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${ROOT_DIR}/bin)

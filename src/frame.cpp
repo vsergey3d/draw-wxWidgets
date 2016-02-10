@@ -33,8 +33,8 @@ void move(Container& container, int32_t xOffset, int32_t xMax) {
         auto width = elem.ptr->bounds().right - elem.ptr->bounds().left;
         auto pos = elem.ptr->position();
 
-        if (dir > 0 && pos.x >= xMax - width ||
-            dir < 0 && pos.x <= 0)
+        if ((dir > 0 && pos.x >= xMax - width) ||
+            (dir < 0 && pos.x <= 0))
             dir *= -1;
 
         pos.x += dir * xOffset;

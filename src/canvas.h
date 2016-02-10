@@ -54,4 +54,4 @@ private:
     Color clearColor_ {0.8f, 0.8f, 0.8f, 1.0f};
 };
 
-}; // namespace draw
+} // namespace draw

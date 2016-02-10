@@ -70,4 +70,4 @@ void WXCanvas::doRepaint() {
     SwapBuffers();
 }
 
-}; // namespace draw {
+} // namespace draw {
