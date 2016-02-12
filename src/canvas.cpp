@@ -15,7 +15,7 @@ WXCanvas::WXCanvas(wxWindow* parent, wxWindowID id, int* attribs) :
 
     using namespace draw;
 
-    renderer_ = makeRenderer(std::move(make_unique<WXContext>(*this)));
+    renderer_ = makeRenderer(std::move(std::unique_ptr<WXContext>(new WXContext(*this))));
     font_ = renderer_->makeFont("cour.ttf", 10);
 }
 

@@ -44,7 +44,6 @@ private:
         Element(Ptr ptr) : dir(1), ptr(ptr) {};
     };
 
-
     std::vector<Element<draw::ShapePtr>> shapes_;
     std::vector<Element<draw::TextPtr>> texts_;
 };
