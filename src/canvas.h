@@ -50,8 +50,7 @@ private:
 
     RendererPtr renderer_;
     FontPtr font_;
-    Size screenSize_ {0, 0};
-    Color clearColor_ {0.8f, 0.8f, 0.8f, 1.0f};
+    const Color clearColor_ {0.8f, 0.8f, 0.8f, 1.0f};
 };
 
 } // namespace draw

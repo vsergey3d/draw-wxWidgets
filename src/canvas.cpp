@@ -51,8 +51,8 @@ void WXCanvas::repaint() {
 
 void WXCanvas::onSize(wxSizeEvent& event) {
 
-    screenSize_.width = event.GetSize().x;
-    screenSize_.height = event.GetSize().y;
+    const auto& sz = event.GetSize();
+    renderer_->resize(draw::Size((uint32_t)sz.x, (uint32_t)sz.y));
 }
 
 void WXCanvas::onPaint(wxPaintEvent&) {
@@ -66,7 +66,7 @@ void WXCanvas::onPaint(wxPaintEvent&) {
 
 void WXCanvas::doRepaint() {
 
-    renderer_->draw(screenSize_, clearColor_);
+    renderer_->draw(clearColor_);
     SwapBuffers();
 }
 
